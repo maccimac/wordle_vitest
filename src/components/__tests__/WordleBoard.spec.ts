@@ -6,6 +6,8 @@ import { describe, it} from 'vitest'
 
 import { mount } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
+import { VICTORY_MESSAGE } from "../../settings.ts"
+
 
 describe('WordleBoard', () => {
   it('renders properly', () => {
@@ -14,7 +16,6 @@ describe('WordleBoard', () => {
     expect(wrapper.text()).toContain('Hello Vitest')
   })
 })
-
 
 /**
  * 4. Naming
@@ -37,7 +38,8 @@ describe('WordleBoard', ()=> {
     await guessInput.trigger("keydown.enter")
 
     // Assertion
-    expect(wrapper.text()).toContain("You won!")
+    // expect(wrapper.text()).toContain("You won!") // <- Magic string
+    expect(wrapper.text()).toContain(VICTORY_MESSAGE)
   })
 })
 
