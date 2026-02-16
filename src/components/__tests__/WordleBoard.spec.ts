@@ -6,12 +6,12 @@ import { describe, it} from 'vitest'
 
 import { mount } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
-import { VICTORY_MESSAGE } from "../../settings.ts"
+import { DEFEAT_MESSAGE, VICTORY_MESSAGE } from "../../settings.ts"
 
 
 describe('WordleBoard', () => {
   it('renders properly', () => {
-    const wrapper = mount(WordleBoard, { props: { msg: 'Hello Vitest' } })
+    const wrapper : VueComponent = mount(WordleBoard, { props: { msg: 'Hello Vitest' } })
     expect(wrapper.text()).toMatch('Hello Vitest');
     expect(wrapper.text()).toContain('Hello Vitest')
   })
@@ -22,24 +22,64 @@ describe('WordleBoard', () => {
  * - Don't use "correct" or "incorrect"
  * - Should be understanble for non-dev
  */
-describe('WordleBoard', ()=> {
+describe('WordleBoard', () : void => {
+  let wordOfTheDay = "TESTS"
   test("Victory message appears when the user makes a guess that matches word of the day", async () => {
     // Arrange
     const wrapper = mount
     (WordleBoard, {
       props: {
-        wordOfTheDay: "TESTS"
+        wordOfTheDay
       }
     })
 
     // Act
-    const guessInput = wrapper.find("input[type=text]");
-    await guessInput.setValue("TESTS")
+    const guessInput : DOMWrapper<ELEMENT>= wrapper.find("input[type=text]");
+    await guessInput.setValue(wordOfTheDay)
     await guessInput.trigger("keydown.enter")
 
     // Assertion
     // expect(wrapper.text()).toContain("You won!") // <- Magic string
     expect(wrapper.text()).toContain(VICTORY_MESSAGE)
+  })
+  /**
+   * 5.
+   * - You can use test.todo until you're ready
+   */
+  // test.todo("a defeat message if the user makes a guess that is incorrect");
+
+  test("A defeat message if the user makes a guess that is incorrect",
+    async () : void => {
+
+      // Arrange
+      const wrapper: VueComponent = mount(WordleBoard, {
+        wordOfTheDay: "Correct"
+      });
+      // Act
+      const guessInput: DOMWrapper<ELEMENT> = wrapper.find("input[type=text]");
+      await guessInput.setValue("wrong value")
+      await guessInput.trigger("keydown.enter")
+
+      expect(wrapper.text()).toContain(DEFEAT_MESSAGE);
+    })
+
+  // test.todo("no end of game message")
+  it.todo("no end of game message") // `it.todo` <- This also works
+
+  test("No end of game message if no guess yet", (): void => {
+    // Arrange
+    const wrapper = mount(WordleBoard, {
+      wordOfTheDay: "Correct"
+    })
+    // Act
+    // no action
+
+    // Assertion
+    /**
+     * 5. Use of `.not`
+     */
+    expect(wrapper.text()).not.toContain(VICTORY_MESSAGE)
+    expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
   })
 })
 

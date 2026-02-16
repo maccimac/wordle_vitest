@@ -1,20 +1,39 @@
-
 <script setup lang="ts">
-import { VICTORY_MESSAGE } from "../settings.ts"
-defineProps<{
+import {DEFEAT_MESSAGE, VICTORY_MESSAGE} from "../settings.ts"
+import {ref, computed} from "vue";
+
+/**
+ * Always define props as `const props = ...`
+ */
+const props = defineProps<{
   msg: string,
   wordOfTheDay: string,
 }>()
 
+const guessInProgress = ref("");
+const guessSubmitted = ref("");
+
+const success = computed(()=>{
+  return props.wordOfTheDay === guessSubmitted.value
+})
 </script>
 
 <template>
-  <p>{{msg}}</p>
+  <p>{{ msg }}</p>
+  <p>{{ wordOfTheDay }}</p>
 
-  <input type="text"/>
-  <p>{{wordOfTheDay}}</p>
+  <input
+    type="text"
+    v-model="guessInProgress"
+    @keydown.enter="guessSubmitted = guessInProgress"
+  />
+  <!--  <p>{{ VICTORY_MESSAGE }}</p>-->
+  <!--  <p>{{ DEFEAT_MESSAGE }}</p>-->
 
-  <p>{{ VICTORY_MESSAGE }}</p>
+{{ guessSubmitted }}
+
+  <p v-if="guessInProgress.length > 0" v-text="success ? VICTORY_MESSAGE : DEFEAT_MESSAGE"/>
+
 </template>
 
 <style scoped>

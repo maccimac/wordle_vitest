@@ -14,7 +14,7 @@ import WordleBoard from './components/WordleBoard.vue'
   <main>
     <WordleBoard
       msg="You did it!"
-      wordOfTheDay="Word of the day"
+      wordOfTheDay="vitest"
     />
   </main>
 </template>
