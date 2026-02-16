@@ -12,7 +12,10 @@ import WordleBoard from './components/WordleBoard.vue'
 <!--  </header>-->
 
   <main>
-    <WordleBoard msg="You did it!" />
+    <WordleBoard
+      msg="You did it!"
+      wordOfTheDay="Word of the day"
+    />
   </main>
 </template>
 
