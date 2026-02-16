@@ -9,6 +9,11 @@ export default mergeConfig(
       environment: 'jsdom',
       exclude: [...configDefaults.exclude, 'e2e/**'],
       root: fileURLToPath(new URL('./', import.meta.url)),
+      /**
+       * 4. Need `globals: true` for beforeEach, describe, afterAll etc.
+       * Next add "types": [..., "vitest/globals"] on tsconfig.vitest.jsons
+       */
+      globals: true
     },
   }),
 )

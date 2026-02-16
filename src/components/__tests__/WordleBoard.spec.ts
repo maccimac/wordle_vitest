@@ -1,4 +1,8 @@
-import { describe, it, expect } from 'vitest'
+/**
+ * 4. You can remove "expect" once you add globals: true on vitest.config.js
+ */
+import { describe, it} from 'vitest'
+// import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
