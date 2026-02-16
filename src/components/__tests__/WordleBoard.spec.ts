@@ -22,8 +22,13 @@ describe('WordleBoard', () => {
  * - Should be understanble for non-dev
  */
 describe('WordleBoard', () : void => {
+  /**
+   * 5. Arrange phase is moved here
+   */
+  // Arrange
   let wordOfTheDay : string = "TESTS"
   let wrapper: ReturnType<typeof mount>;
+
   beforeEach(() : void=>{
       wrapper = mount
       (WordleBoard, {
@@ -33,13 +38,26 @@ describe('WordleBoard', () : void => {
       })
   })
 
+  /**
+   * 5. Helper methods
+   */
+  async function playerSubmitsGuess(guess: string){
+    const guessInput : DOMWrapper<ELEMENT>= wrapper.find("input[type=text]");
+    await guessInput.setValue(guess)
+    await guessInput.trigger("keydown.enter")
+  }
+
   test("Victory message appears when the user makes a guess that matches word of the day", async () => {
+    /**
+     * Arrange phase is moved to beforeEach
+     */
     // Arrange
 
+    /**
+     * Use helperMethod playerSubmitsGuest for Act phase
+     */
     // Act
-    const guessInput : DOMWrapper<ELEMENT>= wrapper.find("input[type=text]");
-    await guessInput.setValue(wordOfTheDay)
-    await guessInput.trigger("keydown.enter")
+    await playerSubmitsGuess(wordOfTheDay)
 
     // Assertion
     // expect(wrapper.text()).toContain("You won!") // <- Magic string
@@ -53,14 +71,9 @@ describe('WordleBoard', () : void => {
 
   test("A defeat message if the user makes a guess that is incorrect",
     async () : void => {
+      await playerSubmitsGuess("wrong value")
 
-      // Arrange
-
-      // Act
-      const guessInput: DOMWrapper<ELEMENT> = wrapper.find("input[type=text]");
-      await guessInput.setValue("wrong value")
-      await guessInput.trigger("keydown.enter")
-
+      // Assertion
       expect(wrapper.text()).toContain(DEFEAT_MESSAGE);
     })
 
@@ -68,10 +81,6 @@ describe('WordleBoard', () : void => {
   it.todo("no end of game message") // `it.todo` <- This also works
 
   test("No end of game message if no guess yet", (): void => {
-    // Arrange
-    /**
-     * Now set in beforeEach
-     */
     // Act
     // no action
 
