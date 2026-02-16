@@ -1,9 +1,8 @@
 /**
  * 4. You can remove "expect" once you add globals: true on vitest.config.js
  */
-import { describe, it} from 'vitest'
+import { describe, it, beforeEach} from 'vitest'
 // import { describe, it, expect } from 'vitest'
-
 import { mount } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
 import { DEFEAT_MESSAGE, VICTORY_MESSAGE } from "../../settings.ts"
@@ -23,15 +22,19 @@ describe('WordleBoard', () => {
  * - Should be understanble for non-dev
  */
 describe('WordleBoard', () : void => {
-  let wordOfTheDay = "TESTS"
+  let wordOfTheDay : string = "TESTS"
+  let wrapper: ReturnType<typeof mount>;
+  beforeEach(() : void=>{
+      wrapper = mount
+      (WordleBoard, {
+        props: {
+          wordOfTheDay
+        }
+      })
+  })
+
   test("Victory message appears when the user makes a guess that matches word of the day", async () => {
     // Arrange
-    const wrapper = mount
-    (WordleBoard, {
-      props: {
-        wordOfTheDay
-      }
-    })
 
     // Act
     const guessInput : DOMWrapper<ELEMENT>= wrapper.find("input[type=text]");
@@ -52,9 +55,7 @@ describe('WordleBoard', () : void => {
     async () : void => {
 
       // Arrange
-      const wrapper: VueComponent = mount(WordleBoard, {
-        wordOfTheDay: "Correct"
-      });
+
       // Act
       const guessInput: DOMWrapper<ELEMENT> = wrapper.find("input[type=text]");
       await guessInput.setValue("wrong value")
@@ -68,9 +69,9 @@ describe('WordleBoard', () : void => {
 
   test("No end of game message if no guess yet", (): void => {
     // Arrange
-    const wrapper = mount(WordleBoard, {
-      wordOfTheDay: "Correct"
-    })
+    /**
+     * Now set in beforeEach
+     */
     // Act
     // no action
 
